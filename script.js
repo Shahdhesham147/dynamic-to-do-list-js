@@ -1,69 +1,49 @@
+// الانتظار حتى يتم تحميل الصفحة بالكامل
+document.addEventListener('DOMContentLoaded', function() {
+    const addButton = document.getElementById('add-task-btn');
+    const taskInput = document.getElementById('task-input');
+    const taskList = document.getElementById('task-list');
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
+    // دالة لإضافة المهمة
+    function addTask() {
+        const taskText = taskInput.value.trim(); // أخذ النص المدخل
 
-#todo-app {
-    width: 100%;
-    max-width: 400px;
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
+        if (taskText === "") {
+            alert("Please enter a task.");
+            return; // إذا كانت القيمة فارغة، يظهر تنبيه
+        }
 
-#task-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
+        // إنشاء عنصر li جديد للمهمة
+        const li = document.createElement('li');
+        li.textContent = taskText;
 
-#add-task-btn {
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+        // إنشاء زر الحذف
+        const removeButton = document.createElement('button');
+        removeButton.textContent = "Remove";
+        removeButton.classList.add('remove-btn');
 
-#add-task-btn:hover {
-    background-color: #0056b3;
-}
+        // إضافة حدث للحذف
+        removeButton.addEventListener('click', function() {
+            taskList.removeChild(li);
+        });
 
-ul {
-    list-style-type: none;
-    padding: 0;
-}
+        // إضافة الزر داخل li
+        li.appendChild(removeButton);
+        
+        // إضافة li إلى taskList
+        taskList.appendChild(li);
 
-li {
-    background-color: #eeeeee;
-    margin-top: 8px;
-    padding: 10px;
-    border-radius: 4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+        // مسح حقل الإدخال بعد إضافة المهمة
+        taskInput.value = "";
+    }
 
-.remove-btn {
-    cursor: pointer;
-    background-color: #ff6347;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 5px 10px;
-}
+    // إضافة مستمع حدث للزر "Add Task"
+    addButton.addEventListener('click', addTask);
 
-.remove-btn:hover {
-    background-color: #d9534f;
-}
+    // إضافة مستمع حدث للمفتاح "Enter" لإضافة المهمة
+    taskInput.addEventListener('keypress', function(event) {
+        if (event.key === "Enter") {
+            addTask();
+        }
+    });
+});
